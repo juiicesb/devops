@@ -7,7 +7,7 @@ echo "updating pack files for cmd/devops"
 curDir=$PWD
 cd $devopsDir 
 
-packr2
+pkger
 
 cd $curDir 
 

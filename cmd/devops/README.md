@@ -53,20 +53,20 @@ export PATH=$PATH:$GOPATH/bin
 
 ### Compiling locally 
 
-In order to build _devops_, you will need [packr2](https://github.com/gobuffalo/packr/blob/master/v2) to include the 
+In order to build _devops_, you will need [pkger](github.com/markbates/pkger/cmd/pkger) to include the 
 Golang files and readme from the example [build/cicd](https://gitlab.com/geeks-accelerator/oss/devops/tree/master/build/cicd). 
-When code is changed in this project that needs to be included with _build/cicd_, _parkr2_ needs to be ran. 
+When code is changed in this project that needs to be included with _build/cicd_, _pkger_ needs to be ran. 
 
     Packr is a simple solution for bundling static assets inside of Go binaries. Most importantly it does it in a way 
     that is friendly to developers while they are developing.
 
-To install _packr2_ 
+To install _pkger_ 
 ```bash
-$ go get -u github.com/gobuffalo/packr/v2/packr2
+$ go get -u github.com/markbates/pkger/cmd/pkger
 ```
 
 This repo has a post-commit hook at [githooks/post-commit](https://gitlab.com/geeks-accelerator/oss/devops/blob/master/githooks/post-commit) 
-to detect changes to `build/cicd` tool and executes _parkr2_. Changed files are included with `git commit --amend`
+to detect changes to `build/cicd` tool and executes _pkger_. Changed files are included with `git commit --amend`
 
 To install the post-commit hook
 ```bash

@@ -1,13 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/gobuffalo/packr/v2"
+	"github.com/markbates/pkger"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
 	"gitlab.com/geeks-accelerator/oss/devops/pkg/devdeploy"
@@ -143,36 +144,69 @@ func injectBuildCicd(log *log.Logger, projectDir string, force bool) error {
 	// The current copy of the build/cicd tool will be used as the template for deploying a copy of the tool to a project.
 	// Packr is used to bundle these files when compiling the binary to make it easy for this tool to be installed
 	// without having manage templates as some external resource.
-	dir := "../../build/cicd"
-	box := packr.New("cicd", dir)
+	buildDir := "../../build/cicd"
+
+	box, err := pkger.Open(buildDir)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	files, err := box.Readdir(0)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+
 
 	// Loop through all the files in the box and copy each one to the target project.
-	for _, f := range box.List() {
+	for _, f := range files {
+
+
+
+
+		fmt.Println("f.Name()", f.Name())
+
+
+		if !strings.HasPrefix(f.Name(), buildDir) {
+
+		}
+
 
 		var skipFile bool
 		for _, p := range skipPaths {
-			if strings.HasPrefix(f, p) {
+			if strings.HasPrefix(f.Name(), p) {
 				skipFile = true
 				break
 			}
 		}
-		if skipFile {
+		if skipFile || f.IsDir() {
 			continue
 		}
 
-		dat, err := box.FindString(f)
+		fh, err := box.Open(f.Name())
 		if err != nil {
-			return err
+			return errors.WithMessagef(err, "Failed to open file '%s'.", f.Name())
 		}
+
+		bts, err := ioutil.ReadAll(fh)
+		fh.Close()
+
+		if err != nil {
+			return errors.WithMessagef(err, "Failed to read file '%s'.", f.Name())
+		}
+		dat := string(bts)
 
 		for k, v := range replacements {
 			dat = strings.Replace(dat, k, v, -1)
 		}
 
-		newFilePath := filepath.Join(targetDir, f)
+		newFilePath := filepath.Join(targetDir, f.Name())
+
+		fmt.Println("1")
 
 		if _, err := os.Stat(newFilePath); err != nil {
 			if !os.IsNotExist(err) {
+				fmt.Println("1 erra")
 				return err
 			}
 
@@ -182,6 +216,9 @@ func injectBuildCicd(log *log.Logger, projectDir string, force bool) error {
 			if err != nil {
 				return errors.WithMessagef(err, "Failed to create file directory '%s'.", fileDir)
 			}
+
+			fmt.Println("2")
+
 
 			// Write the new file.
 			err = ioutil.WriteFile(newFilePath, []byte(dat), 0644)
@@ -193,6 +230,8 @@ func injectBuildCicd(log *log.Logger, projectDir string, force bool) error {
 			log.Printf("\t%s already exists, skipping\n", f)
 		}
 	}
+
+	fmt.Println("DONE!!!!")
 
 	return nil
 }
