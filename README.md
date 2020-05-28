@@ -491,6 +491,8 @@ Add port `8081` to the AWS security group `gitlab-runner` using the same process
 17. Setup complete. You should now be able navigate back to the `CI / CD` under `Settings` for your GitLab repo and see 
 the newly deployed instance listed as an active runner. 
 
+18. Logs for the gitlab runner can be accessed using `journalctl -u gitlab-runner -f`
+
 ![GitLab Runner Activated](assets/readme-files/gitlab-cicd-settings-setup-manual-activated.png)
     
 
