@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+
+# update files for cmd/devops with packr 
+devopsDir=$(git rev-parse --show-toplevel)/cmd/devops
+echo "updating pack files for cmd/devops"
+curDir=$PWD
+cd $devopsDir 
+
+packr2
+
+cd $curDir 
+
+fileChanged=$(git diff cmd/devops/packrd/packed-packr.go)
+if [[ $fileChanged != "" ]]; then
+    git add cmd/devops/packrd/packed-packr.go
+    git commit --amend -C HEAD  --no-verify
+fi 
+
+fileChanged=$(git diff cmd/devops/main-packr.go)
+if [[ $fileChanged != "" ]]; then
+    git add cmd/devops/main-packr.go
+    git commit --amend -C HEAD  --no-verify
+fi
