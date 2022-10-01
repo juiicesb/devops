@@ -157,7 +157,7 @@ loaded from AWS Secrets Manager.
 ### Database Schema
 
 The directory `build/cicd/internal/schema` is a minimalistic database migration script that implements 
-[github.com/juiicesb/sqlxmigrate](https://godoc.org/github.com/juiicesb/sqlxmigrate). Database schema 
+[github.com/juiicesb/sqlxmigrator](https://godoc.org/github.com/juiicesb/sqlxmigrator). Database schema 
 for the entire project should be defined globally. The [SaaS Startup Kit](https://github.com/juiicesb/pilnook) 
 also uses this package to dynamically spin up database containers on-demand and automatically include all the 
 migrations. This allows the testing package to programmatically execute schema migrations before running any unit tests. 

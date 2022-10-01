@@ -142,7 +142,7 @@ Functions are deployed to [AWS Lambda](https://aws.amazon.com/lambda/).
 ### Schema Migrations 
 
 _cicd_ includes a minimalistic database migration script that implements 
-[github.com/juiicesb/sqlxmigrate](https://godoc.org/github.com/juiicesb/sqlxmigrate). It provides 
+[github.com/juiicesb/sqlxmigrator](https://godoc.org/github.com/juiicesb/sqlxmigrator). It provides 
 schema versioning and migration rollback. The schema for the entire project is defined globally and is located inside 
 internal: [internal/schema](https://github.com/juiicesb/devops/tree/master/build/cicd/internal/schema) 
 

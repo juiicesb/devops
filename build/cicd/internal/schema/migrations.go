@@ -6,15 +6,15 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/juiicesb/sqlxmigrate"
+	"github.com/juiicesb/sqlxmigrator"
 	_ "github.com/lib/pq"
 	"github.com/pkg/errors"
 )
 
 // migrationList returns a list of migrations to be executed. If the id of the
 // migration already exists in the migrations table it will be skipped.
-func migrationList(ctx context.Context, db *sqlx.DB, log *log.Logger, isUnittest bool) []*sqlxmigrate.Migration {
-	return []*sqlxmigrate.Migration{
+func migrationList(ctx context.Context, db *sqlx.DB, log *log.Logger, isUnittest bool) []*sqlxmigrator.Migration {
+	return []*sqlxmigrator.Migration{
 		// Create table users.
 		{
 			ID: "20190818-01",
